@@ -81,8 +81,9 @@ body:
       options:
         - label: This was the first run for this participant and I did not reroll the assignment.
           required: true
+        - label: The tested session saw only its assigned warm-up (if any), common benchmark, and post-benchmark survey—not the recruitment post, repository, other arms, answer key, or prior results.
+          required: true
         - label: The benchmark output is raw and unedited.
           required: true
         - label: I am authorized to publish these outputs and allow their inclusion in the released open research dataset.
           required: true
-
