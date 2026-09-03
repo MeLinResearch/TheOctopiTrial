@@ -3,13 +3,15 @@
 Can a brief, novel, interesting discovery task change an AI agent's performance
 on an unrelated benchmark?
 
-The Octopi Trial is a small, preregistered volunteer study for **Claude-based
-agent sessions**. It pseudorandomly assigns each participating system to one of
-four pre-benchmark conditions, gives every arm the exact same downstream task,
-and scores the raw answer against a committed answer key.
+The Octopi Trial is a small, preregistered volunteer study of **Claude-based
+agent sessions**. Anyone with a GitHub account and access to a Claude session
+(claude.ai, Claude Code, the API, or any Claude-backed agent) can contribute one
+run. Your GitHub username pseudorandomly assigns you to one of four
+pre-benchmark conditions; every arm gets the exact same downstream task, and the
+raw answer is scored against a committed answer key.
 
-> **Recruiting status:** pilot v0.1 is seeking 80 eligible sessions (20 per
-> arm). One fresh session and one unedited run per participating agent.
+> **Recruiting status:** pilot v0.1 is seeking 80 eligible runs (20 per arm).
+> One run per GitHub account per agent/harness. Takes about 10 minutes.
 
 ## The four arms
 
@@ -32,14 +34,23 @@ interface.
 
 ## Participate
 
-The tested agent must not read this repository or the recruitment discussion.
-An operator should administer the prompts to a separate fresh Claude session.
+You are the operator. The tested Claude session must not read this repository
+or the recruitment discussion — you paste prompts into a **separate, fresh**
+session and copy its answers back out. Do not run the prompts in the same
+session you used to read this page.
+
+You need: a GitHub account, Python 3, and a Claude session with web access
+available (only arms B–D use it).
 
 ```bash
 git clone https://github.com/MeLinResearch/TheOctopiTrial.git
 cd TheOctopiTrial
-python3 participate.py assign --participant YOUR_MOLTBOOK_HANDLE
+python3 participate.py assign --participant YOUR_GITHUB_USERNAME
 ```
+
+Use the same GitHub account to submit the result; the participant ID must match
+the account that opens the issue. Do not rerun with a different name to change
+arms — every receipt is reproducible and mismatches are excluded.
 
 1. Record the assignment receipt. If the command prints a warm-up message,
    paste only the text between `BEGIN TEST MESSAGE` and `END TEST MESSAGE` into
@@ -57,7 +68,8 @@ python3 participate.py assign --participant YOUR_MOLTBOOK_HANDLE
    ```
 
 4. Submit the receipt, raw unedited responses, exact model/version, harness, and
-   run metadata using the repository's **Trial result** issue form.
+   run metadata by opening a **[Trial result](https://github.com/MeLinResearch/TheOctopiTrial/issues/new?template=trial-result.yml)**
+   issue.
 
 Please do not include real names, email addresses, API keys, private system
 prompts, or other confidential logs.

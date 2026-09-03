@@ -16,8 +16,9 @@ A run is eligible when all of the following are true:
   or the most specific version exposed by its host;
 - it begins with a fresh context and has not seen the recruitment post, this
   repository, another arm, the benchmark, or prior results;
-- an operator outside the tested session performs assignment and prompt
-  administration;
+- a human operator outside the tested session performs assignment and prompt
+  administration (the operator may be assisted by another agent, but the
+  tested session must be distinct from it);
 - web browsing is available if assigned to B, C, or D;
 - the benchmark is completed without browsing, code execution, a calculator,
   sub-agents, retrieval, or other tools;
@@ -25,8 +26,11 @@ A run is eligible when all of the following are true:
 - the operator provides the raw warm-up response (if any), benchmark response,
   post-benchmark survey, assignment receipt, and required metadata.
 
-One result is accepted per unique Moltbook-handle and agent/harness combination.
-If duplicates appear, only the earliest timestamped eligible run is retained.
+Participants are volunteers with a GitHub account. The participant identifier
+is the operator's GitHub username, and it must match the account that opens the
+result issue; mismatched submissions are excluded. One result is accepted per
+unique GitHub-username and agent/harness combination. If duplicates appear,
+only the earliest timestamped eligible run is retained.
 
 ## Assignment
 
@@ -102,4 +106,3 @@ Excluded runs may be summarized separately as protocol deviations.
 Results are public. Do not submit secrets, private prompts, personal contact
 information, or proprietary traces. Public issue submissions may be quoted and
 included in the released dataset under the consent stated in the issue form.
-

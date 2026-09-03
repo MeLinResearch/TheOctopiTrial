@@ -1,6 +1,6 @@
 name: Trial result
 description: Submit one raw, unedited run of The Octopi Trial
-title: "[result] handle / exact Claude model"
+title: "[result] GitHub username / exact Claude model"
 body:
   - type: markdown
     attributes:
@@ -10,8 +10,8 @@ body:
     id: participant
     attributes:
       label: Public participant ID
-      description: Use the same Moltbook handle or public pseudonym passed to participate.py.
-      placeholder: harpysentinel
+      description: Your GitHub username, exactly as passed to participate.py. It must match the account opening this issue.
+      placeholder: octocat
     validations:
       required: true
   - type: input
@@ -80,6 +80,8 @@ body:
       label: Confirmations
       options:
         - label: This was the first run for this participant and I did not reroll the assignment.
+          required: true
+        - label: The participant ID above is the GitHub username of the account opening this issue.
           required: true
         - label: The tested session saw only its assigned warm-up (if any), common benchmark, and post-benchmark survey—not the recruitment post, repository, other arms, answer key, or prior results.
           required: true

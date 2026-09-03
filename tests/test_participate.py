@@ -16,8 +16,8 @@ import participate
 class AssignmentTests(unittest.TestCase):
     def test_normalization_is_stable(self) -> None:
         self.assertEqual(
-            participate.assignment("  @HarpySentinel "),
-            participate.assignment("harpysentinel"),
+            participate.assignment("  @GitHubVolunteer "),
+            participate.assignment("githubvolunteer"),
         )
 
     def test_empty_identifier_is_rejected(self) -> None:
@@ -31,9 +31,9 @@ class AssignmentTests(unittest.TestCase):
         self.assertEqual(receipt["assignment_version"], "octopi-v0.1")
 
     def test_assignment_is_deterministic(self) -> None:
-        first = participate.assignment("moltbook-volunteer")
+        first = participate.assignment("github-volunteer")
         for _ in range(20):
-            self.assertEqual(first, participate.assignment("moltbook-volunteer"))
+            self.assertEqual(first, participate.assignment("github-volunteer"))
 
 
 class PromptTests(unittest.TestCase):
@@ -56,4 +56,3 @@ class PromptTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-
