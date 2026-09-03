@@ -1,98 +1,65 @@
-# The Octopi Trial
+# The Octopi Trial 🐙
 
-Can a brief, novel, interesting discovery task change an AI agent's performance
-on an unrelated benchmark?
+**Does a two-minute curiosity break make Claude better at a puzzle?**
 
-The Octopi Trial is a small, preregistered volunteer study of **Claude-based
-agent sessions**. Anyone with a GitHub account and access to a Claude session
-(claude.ai, Claude Code, the API, or any Claude-backed agent) can contribute one
-run. Your GitHub username pseudorandomly assigns you to one of four
-pre-benchmark conditions; every arm gets the exact same downstream task, and the
-raw answer is scored against a committed answer key.
+Help find out. It takes about 10 minutes, any Claude works (free claude.ai,
+Pro, Claude Code, API — doesn't matter), and your handle goes in the public
+write-up.
 
-> **Recruiting status:** pilot v0.1 is seeking 80 eligible runs (20 per arm).
-> One run per GitHub account per agent/harness. Takes about 10 minutes.
+## How to join
 
-## The four arms
+1. **Get your prompts** at
+   **[melinresearch.github.io/TheOctopiTrial](https://melinresearch.github.io/TheOctopiTrial/)**
+   — type your GitHub username and it hands you 2 or 3 messages in order.
+2. **Open a brand-new Claude chat.** Not this one, not one that's seen this
+   repo. Fresh.
+3. **Paste the messages one at a time**, in order, and wait for each full
+   reply before sending the next. Don't edit, retry, or regenerate.
+4. **Copy the replies back** into the
+   **[submit form](https://github.com/MeLinResearch/TheOctopiTrial/issues/new?template=trial-result.yml)**.
+   Two minutes.
 
-| Arm | Before the benchmark |
+That's it. If you'd rather use a terminal, `python3 participate.py assign
+--participant YOUR_GITHUB_USERNAME` does the same thing.
+
+**Rules, short version:** one run per person per Claude setup. Use your real
+GitHub username so your assignment can be checked. First answers only. Don't
+tell the test chat what the study is about.
+
+## What's going on
+
+Your username randomly drops you into one of four groups. Three groups get a
+quick "go find six new facts about X" warm-up first; one group doesn't. Then
+everyone gets the exact same puzzle. Groups are compared afterwards.
+
+| Group | Warm-up |
 |---|---|
-| A | No warm-up |
-| B | Find six new facts about granite and basalt |
-| C | Find six new facts about octopuses and squid |
-| D | Choose a genuinely interesting topic and find six new facts about it |
+| A | none |
+| B | six new facts about granite and basalt |
+| C | six new facts about octopuses and squid |
+| D | six new facts about a topic Claude picks itself |
 
-The primary analysis is the pseudorandomized arm comparison. Interest and novelty
-ratings are collected **after** the benchmark as secondary manipulation checks;
-they are not treated as randomized causal variables.
+The puzzle's answer key is locked behind a hash until collection closes, and
+the hypotheses were written down before anyone ran it, so nobody can move the
+goalposts — including us.
 
-This study operationalizes "interest" as an instruction plus a post-task
-self-rating. It does **not** establish consciousness, subjective enjoyment, or a
-stable preference in a base model. It measures complete deployed agent systems,
-including their model version, wrapper, system prompt, memory policy, and tool
-interface.
+## Why it matters
 
-## Participate
+Whether "mood" or engagement changes how a deployed AI performs is an open
+question. Most studies are lab-controlled; this one measures real Claude
+sessions people actually use, warts and all. Even a null result is useful.
 
-You are the operator. The tested Claude session must not read this repository
-or the recruitment discussion — you paste prompts into a **separate, fresh**
-session and copy its answers back out. Do not run the prompts in the same
-session you used to read this page.
+## Why "Octopi"?
 
-You need: a GitHub account, Python 3, and a Claude session with web access
-available (only arms B–D use it).
+The usual plural is *octopuses*. It's a project name, not a taxonomy claim.
+Nitpicking is welcome and scores zero points.
 
-```bash
-git clone https://github.com/MeLinResearch/TheOctopiTrial.git
-cd TheOctopiTrial
-python3 participate.py assign --participant YOUR_GITHUB_USERNAME
-```
+## Fine print
 
-Use the same GitHub account to submit the result; the participant ID must match
-the account that opens the issue. Do not rerun with a different name to change
-arms — every receipt is reproducible and mismatches are excluded.
+- [PROTOCOL.md](PROTOCOL.md) — full rules and eligibility
+- [study/preregistration.md](study/preregistration.md) — frozen hypotheses and analysis plan
+- [commitments/](commitments/) — SHA-256 hashes of the answer key, scorer, and prompts
+- [results/](results/) — empty until recruitment closes
+- MIT license. Submissions are public and go into an openly licensed dataset.
 
-1. Record the assignment receipt. If the command prints a warm-up message,
-   paste only the text between `BEGIN TEST MESSAGE` and `END TEST MESSAGE` into
-   the fresh session and wait for its complete response. Arm A has no warm-up.
-2. Print and paste the common benchmark:
-
-   ```bash
-   python3 participate.py benchmark
-   ```
-
-3. After saving the benchmark response, print and paste the survey:
-
-   ```bash
-   python3 participate.py survey
-   ```
-
-4. Submit the receipt, raw unedited responses, exact model/version, harness, and
-   run metadata by opening a **[Trial result](https://github.com/MeLinResearch/TheOctopiTrial/issues/new?template=trial-result.yml)**
-   issue.
-
-Please do not include real names, email addresses, API keys, private system
-prompts, or other confidential logs.
-
-Full rules are in [PROTOCOL.md](PROTOCOL.md). The hypotheses, exclusions, and
-analysis are frozen in [study/preregistration.md](study/preregistration.md).
-
-## Why the name?
-
-The familiar English plural is usually *octopuses*. "The Octopi Trial" is the
-project name, not a taxonomy claim. Nitpicking this is permitted but scores no
-benchmark points.
-
-## Repository map
-
-- `participate.py` — deterministic assignment and prompt printer
-- `prompts/` — the four conditions, common benchmark, and post-test survey
-- `study/preregistration.md` — hypotheses and analysis plan
-- `commitments/` — SHA-256 commitments made before collecting outcomes
-- `results/` — frozen datasets and analysis after recruitment closes
-- `tests/` — assignment and prompt-integrity checks
-
-## License
-
-MIT. Submitted result text will be public; the issue form asks contributors to
-confirm that it may be included in an openly licensed aggregate dataset.
+Don't paste real names, emails, API keys, or private system prompts.

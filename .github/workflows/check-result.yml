@@ -1,0 +1,51 @@
+name: Check submitted run
+on:
+  issues:
+    types: [opened, edited]
+permissions:
+  issues: write
+jobs:
+  check:
+    if: startsWith(github.event.issue.title, '[result]')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            const {execSync} = require('child_process');
+            const body = context.payload.issue.body || '';
+            const author = context.payload.issue.user.login;
+            const labelDefinitions = {
+              result: ['5319e7', 'Submitted Octopi Trial run'],
+              checked: ['0e8a16', 'Assignment verified'],
+              'needs-review': ['fbca04', 'Needs maintainer review'],
+              'arm-A': ['c5def5', 'Assigned to group A'],
+              'arm-B': ['bfdadc', 'Assigned to group B'],
+              'arm-C': ['d4c5f9', 'Assigned to group C'],
+              'arm-D': ['f9d0c4', 'Assigned to group D'],
+            };
+            for (const [name, [color, description]] of Object.entries(labelDefinitions)) {
+              try {
+                await github.rest.issues.createLabel({...context.repo, name, color, description});
+              } catch (error) {
+                if (error.status !== 422) throw error;
+              }
+            }
+            const m = body.match(/### Your GitHub username\s*\n+\s*([^\n]+)/);
+            const typed = (m ? m[1] : '').trim().replace(/^@/, '');
+            const labels = ['result'];
+            let msg;
+            if (typed.toLowerCase() !== author.toLowerCase()) {
+              labels.push('needs-review');
+              msg = `Username in form (\`${typed}\`) doesn't match the account that opened this issue (\`${author}\`). A maintainer will take a look.`;
+            } else {
+              const receipt = execSync(`python3 participate.py receipt --participant "${author}"`).toString();
+              const arm = JSON.parse(receipt).arm;
+              labels.push('checked', 'arm-' + arm);
+              msg = `Thanks, @${author}! Assignment verified — you were in **group ${arm}**.\n\n<details><summary>Receipt</summary>\n\n\`\`\`json\n${receipt.trim()}\n\`\`\`\n</details>`;
+            }
+            await github.rest.issues.addLabels({...context.repo, issue_number: context.payload.issue.number, labels});
+            if (context.payload.action === 'opened') {
+              await github.rest.issues.createComment({...context.repo, issue_number: context.payload.issue.number, body: msg});
+            }

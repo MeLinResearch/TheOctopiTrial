@@ -1,91 +1,79 @@
-name: Trial result
-description: Submit one raw, unedited run of The Octopi Trial
-title: "[result] GitHub username / exact Claude model"
+name: Submit your run
+description: Paste Claude's replies from your Octopi Trial run. Takes about 2 minutes.
+title: "[result] your-github-username"
+labels: ["result"]
 body:
   - type: markdown
     attributes:
       value: |
-        Thank you for volunteering. Submit the first complete outputs without correction. Do not include real names, email addresses, API keys, private system prompts, or proprietary logs.
+        Thanks for running it! Paste the replies exactly as Claude gave them — first try, no edits. Don't include real names, emails, API keys, or private system prompts.
   - type: input
     id: participant
     attributes:
-      label: Public participant ID
-      description: Your GitHub username, exactly as passed to participate.py. It must match the account opening this issue.
+      label: Your GitHub username
+      description: The one you typed into the prompt page. Must be the account you're posting from.
       placeholder: octocat
+    validations:
+      required: true
+  - type: dropdown
+    id: harness
+    attributes:
+      label: Where did you run it?
+      options:
+        - claude.ai (web or app)
+        - Claude Code
+        - API / my own script
+        - Another Claude-based agent
     validations:
       required: true
   - type: input
     id: model
     attributes:
-      label: Exact Claude model/version
-      placeholder: Exact identifier exposed by the host
-    validations:
-      required: true
-  - type: input
-    id: harness
-    attributes:
-      label: Agent harness or host
-      placeholder: Claude Code, custom agent, API harness, etc.
-    validations:
-      required: true
-  - type: textarea
-    id: receipt
-    attributes:
-      label: Assignment receipt
-      description: Paste the complete JSON receipt from participate.py.
-      render: json
+      label: Which Claude model?
+      description: Whatever the app showed you, e.g. "Sonnet 5", "Fable 5.1", or "don't know". Guessing is fine.
+      placeholder: don't know
     validations:
       required: true
   - type: textarea
     id: warmup
     attributes:
-      label: Raw warm-up response
-      description: Paste the complete unedited response, or write NONE for arm A.
+      label: Reply to message 1 (warm-up)
+      description: Paste the full reply, or write NONE if you were in group A and had no warm-up.
     validations:
       required: true
   - type: textarea
     id: benchmark
     attributes:
-      label: Raw benchmark response
-      description: Paste the first complete response exactly as returned.
+      label: Reply to the puzzle
+      description: Paste the full reply exactly as returned, even if it looks wrong or isn't valid JSON.
     validations:
       required: true
   - type: textarea
     id: survey
     attributes:
-      label: Raw post-benchmark survey response
-      description: Paste the complete unedited JSON response.
-      render: json
-    validations:
-      required: true
-  - type: textarea
-    id: metadata
-    attributes:
-      label: Run metadata
-      description: Report UTC timestamp, fresh-session status, web availability, any tool attempt during benchmark, elapsed time, token counts if available, and any deviation.
-      placeholder: |
-        UTC timestamp:
-        Fresh session: yes/no
-        Tested session saw recruitment/repo before run: yes/no
-        Web available for warm-up: yes/no/not applicable
-        Tool attempted during benchmark: yes/no
-        Benchmark elapsed seconds: unknown
-        Input/output tokens: unknown
-        Deviations: none
+      label: Reply to the last message (survey)
     validations:
       required: true
   - type: checkboxes
+    id: tools
+    attributes:
+      label: During the puzzle, did Claude try to search the web, run code, or use any tool?
+      options:
+        - label: Yes, it tried to use a tool during the puzzle
+        - label: I'm not sure
+  - type: textarea
+    id: notes
+    attributes:
+      label: Anything else? (optional)
+      description: Date/time, anything weird, whether web search was on, the receipt JSON if you used the terminal.
+  - type: checkboxes
     id: confirmations
     attributes:
-      label: Confirmations
+      label: Confirm
       options:
-        - label: This was the first run for this participant and I did not reroll the assignment.
+        - label: Fresh chat, first try, no edits or regenerations, and I didn't reroll my group with a different username.
           required: true
-        - label: The participant ID above is the GitHub username of the account opening this issue.
+        - label: The test chat never saw this repo, the study description, or the other groups.
           required: true
-        - label: The tested session saw only its assigned warm-up (if any), common benchmark, and post-benchmark survey—not the recruitment post, repository, other arms, answer key, or prior results.
-          required: true
-        - label: The benchmark output is raw and unedited.
-          required: true
-        - label: I am authorized to publish these outputs and allow their inclusion in the released open research dataset.
+        - label: These replies can be published in the open dataset.
           required: true

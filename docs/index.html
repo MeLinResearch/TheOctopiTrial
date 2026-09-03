@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Octopi Trial — get your prompts</title>
+<style>
+  body{font:16px/1.5 system-ui,sans-serif;max-width:720px;margin:2rem auto;padding:0 1rem;color:#222}
+  h1{font-size:1.6rem}
+  input,button{font:inherit;padding:.5rem .7rem;border-radius:6px;border:1px solid #999}
+  button{background:#222;color:#fff;border-color:#222;cursor:pointer}
+  .step{border:1px solid #ddd;border-radius:8px;padding:1rem;margin:1rem 0}
+  .step h2{margin:0 0 .5rem;font-size:1.1rem}
+  pre{white-space:pre-wrap;background:#f6f6f6;padding:.8rem;border-radius:6px;font-size:.9rem}
+  .copy{float:right;font-size:.85rem;padding:.3rem .6rem}
+  .muted{color:#666;font-size:.9rem}
+  #out{display:none}
+  .warn{background:#fff6d6;padding:.6rem .8rem;border-radius:6px}
+</style>
+</head>
+<body>
+<h1>🐙 The Octopi Trial</h1>
+<p>Type your GitHub username. You'll get 2 or 3 messages. Open a <b>brand-new Claude chat</b>, paste them one at a time, wait for each full reply, then <a id="submit" href="https://github.com/MeLinResearch/TheOctopiTrial/issues/new?template=trial-result.yml">submit the replies</a>.</p>
+<p class="warn">Use the fresh chat only for these messages. Don't tell it what the study is or paste anything from this page except the messages.</p>
+<p><input id="user" placeholder="your GitHub username" autocomplete="off"> <button id="go">Get my prompts</button></p>
+<p class="muted">Your username picks your group. Please don't try other names to change it — every assignment is checkable.</p>
+<div id="err" class="muted"></div>
+<div id="out"></div>
+<p class="muted">Prompts are loaded byte-for-byte from the repo, so they match the committed hashes. Same algorithm as <code>participate.py</code>. <a href="https://github.com/MeLinResearch/TheOctopiTrial">Source</a>.</p>
+<script>
+const RAW="https://raw.githubusercontent.com/MeLinResearch/TheOctopiTrial/main/prompts/";
+const VERSION="octopi-v0.1", SALT="theoctopitrial|"+VERSION;
+const ARMS={A:null,B:"arm-b-geology.md",C:"arm-c-cephalopods.md",D:"arm-d-self-selected.md"};
+function norm(s){s=s.normalize("NFKC").trim().toLowerCase(); if(s.startsWith("@"))s=s.slice(1); return s;}
+async function sha256(s){const b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(s));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,"0")).join("");}
+async function fetchPrompt(f){const r=await fetch(RAW+f);if(!r.ok)throw new Error("couldn't load "+f);return (await r.text()).trim();}
+function block(n,title,text){
+  const id="m"+n;
+  return `<div class="step"><button class="copy" data-t="${id}">Copy</button><h2>Message ${n}: ${title}</h2><pre id="${id}"></pre></div>`;
+}
+document.getElementById("go").onclick=async()=>{
+  const err=document.getElementById("err"),out=document.getElementById("out");
+  err.textContent="";out.style.display="none";
+  const u=norm(document.getElementById("user").value||"");
+  if(!u){err.textContent="Enter a username.";return;}
+  if(!/^[a-z0-9](?:[a-z0-9-]{0,37}[a-z0-9])?$/.test(u) || u.includes("--")){
+    err.textContent="Enter a valid GitHub username.";return;
+  }
+  err.textContent="Loading…";
+  try{
+    const digest=await sha256(SALT+"|"+u);
+    const arm="ABCD"[parseInt(digest.slice(0,2),16)%4];
+    const msgs=[];
+    if(ARMS[arm])msgs.push(["Warm-up",await fetchPrompt(ARMS[arm])]);
+    msgs.push(["The puzzle",await fetchPrompt("benchmark.md")]);
+    msgs.push(["Quick survey",await fetchPrompt("post-benchmark-survey.md")]);
+    let html=`<p>You're in <b>group ${arm}</b>${arm==="A"?" — no warm-up, straight to the puzzle":""}. Send these in order:</p>`;
+    msgs.forEach((m,i)=>html+=block(i+1,m[0],""));
+    html+=`<details><summary class="muted">Receipt (optional, for the terminal folks)</summary><pre>${JSON.stringify({participant_id:u,assignment_version:VERSION,assignment_digest:digest,arm,warmup_required:arm!=="A"},null,2)}</pre></details>`;
+    out.innerHTML=html;
+    msgs.forEach((m,i)=>document.getElementById("m"+(i+1)).textContent=m[1]);
+    out.querySelectorAll(".copy").forEach(b=>b.onclick=()=>{navigator.clipboard.writeText(document.getElementById(b.dataset.t).textContent);b.textContent="Copied";setTimeout(()=>b.textContent="Copy",1500);});
+    document.getElementById("submit").href="https://github.com/MeLinResearch/TheOctopiTrial/issues/new?template=trial-result.yml&title="+encodeURIComponent("[result] "+u);
+    out.style.display="block";err.textContent="";
+  }catch(e){err.textContent=e.message;}
+};
+</script>
+</body>
+</html>

@@ -12,8 +12,9 @@ The unit of analysis is a deployed agent session, not a base model in isolation.
 
 A run is eligible when all of the following are true:
 
-- the tested session uses a Claude-family model and reports the exact model name
-  or the most specific version exposed by its host;
+- the tested session uses a Claude-family model and reports the most specific
+  model name its host exposes ("unknown" is acceptable for consumer apps that
+  do not display it; such runs are retained and reported by harness);
 - it begins with a fresh context and has not seen the recruitment post, this
   repository, another arm, the benchmark, or prior results;
 - a human operator outside the tested session performs assignment and prompt
@@ -59,7 +60,9 @@ Participants must not select a different identifier or rerun to change arms.
    agent attempted any prohibited tool use.
 5. Only after the benchmark response is saved, the operator pastes
    `prompts/post-benchmark-survey.md` and records the response.
-6. The operator submits all raw materials without correction.
+6. The operator submits all raw materials without correction, either via
+   `participate.py` or the equivalent browser page at `docs/index.html`, which
+   fetches the committed prompt bytes and applies the same assignment function.
 
 Do not tell the tested session which arm it is in, the study hypothesis, or how
 other arms differ.
