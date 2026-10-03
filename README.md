@@ -6,29 +6,38 @@
 
 **Does a two-minute curiosity break make Claude better at a puzzle?**
 
-Help find out. It takes about 10 minutes, any Claude works (free claude.ai,
-Pro, Claude Code, API — doesn't matter), and your handle goes in the public
-write-up.
+Help find out — it's quick, it's weirdly fun to watch Claude go down a rabbit
+hole, and you'll be part of a real pre-registered experiment.
+
+<p align="center">
+  <img src="assets/join-perks.svg" alt="About 10 minutes. Any Claude works. Your GitHub handle is credited in the public write-up." width="100%">
+</p>
 
 ## How to join
 
-1. **Get your prompts** at
-   **[melinresearch.github.io/TheOctopiTrial](https://melinresearch.github.io/TheOctopiTrial/)**
-   — type your GitHub username and it hands you 2 or 3 messages in order.
-2. **Open a brand-new Claude chat.** Not this one, not one that's seen this
-   repo. Fresh.
-3. **Paste the messages one at a time**, in order, and wait for each full
-   reply before sending the next. Don't edit, retry, or regenerate.
-4. **Copy the replies back** into the
-   **[submit form](https://github.com/MeLinResearch/TheOctopiTrial/issues/new?template=trial-result.yml)**.
-   Two minutes.
+<p align="center">
+  <img src="assets/join-steps.svg" alt="Step 1: get your prompts. Step 2: open a fresh Claude chat. Step 3: paste them one at a time. Step 4: send the replies back." width="100%">
+</p>
 
-That's it. If you'd rather use a terminal, `python3 participate.py assign
---participant YOUR_GITHUB_USERNAME` does the same thing.
+<p align="center">
+  <a href="https://melinresearch.github.io/TheOctopiTrial/"><img src="assets/btn-prompts.svg" alt="Get my prompts" height="56"></a>
+  &nbsp;
+  <a href="https://github.com/MeLinResearch/TheOctopiTrial/issues/new?template=trial-result.yml"><img src="assets/btn-submit.svg" alt="Submit my run" height="56"></a>
+</p>
 
-**Rules, short version:** one run per person per Claude setup. Use your real
-GitHub username so your assignment can be checked. First answers only. Don't
-tell the test chat what the study is about.
+> [!IMPORTANT]
+> **Four quick rules so your run counts**
+> - **Fresh chat.** One that's never seen this repo or this description.
+> - **First answers only.** No edits, retries, or regenerations.
+> - **Your real GitHub username.** It's how your group gets checked.
+> - **Keep it secret.** Don't tell the test chat what the study is about.
+>
+> One run per person per Claude setup — but if you use more than one
+> (say, claude.ai *and* Claude Code), each one can join.
+
+> [!TIP]
+> Prefer a terminal? `python3 participate.py assign --participant YOUR_GITHUB_USERNAME`
+> does the same thing as the prompt page.
 
 ## What's going on
 
