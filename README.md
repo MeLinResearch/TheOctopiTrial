@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/octopus.svg" alt="The Octopi Trial — a pixel-art octopus wiggling its arms" width="100%">
+</p>
+
 # The Octopi Trial 🐙
 
 **Does a two-minute curiosity break make Claude better at a puzzle?**
@@ -42,6 +46,62 @@ everyone gets the exact same puzzle. Groups are compared afterwards.
 The puzzle's answer key is locked behind a hash until collection closes, and
 the hypotheses were written down before anyone ran it, so nobody can move the
 goalposts — including us.
+
+## How the data fits together
+
+```mermaid
+erDiagram
+    PARTICIPANT ||--|| ASSIGNMENT : "username hashes to"
+    ASSIGNMENT  }o--|| ARM : "lands in"
+    ARM         ||--o| PROMPT : "warm-up (none for A)"
+    PARTICIPANT ||--o{ SUBMISSION : "opens result issue"
+    SUBMISSION  }o--|| PROMPT : "answers benchmark + survey"
+    SUBMISSION  ||--o| SCORE : "scored after close"
+    SCORE       }o--|| ANSWER_KEY : "graded against"
+    COMMITMENT  ||--|| ANSWER_KEY : "SHA-256 locks"
+    COMMITMENT  ||--o{ PROMPT : "SHA-256 locks"
+
+    PARTICIPANT {
+        string github_username PK "NFKC, case-folded, no @"
+    }
+    ASSIGNMENT {
+        string assignment_digest PK "SHA256(salt | username)"
+        string assignment_version "octopi-v0.1"
+        char   arm FK "first byte mod 4"
+        bool   warmup_required
+    }
+    ARM {
+        char   code PK "A B C D"
+        string warmup_topic "none, rocks, cephalopods, Claude's pick"
+    }
+    PROMPT {
+        string path PK "prompts/*.md"
+        string sha256
+    }
+    SUBMISSION {
+        int    issue_number PK
+        string participant FK "must match issue author"
+        string harness "one run per username + harness"
+        string model
+        text   warmup_reply
+        text   benchmark_reply
+        text   survey_reply
+        bool   tool_attempt
+    }
+    SCORE {
+        int  issue_number FK
+        int  score "0-32"
+        bool valid_json
+        bool schema_ok
+    }
+    ANSWER_KEY {
+        string file PK "private until close"
+    }
+    COMMITMENT {
+        string file PK "commitments/*.sha256"
+        string sha256
+    }
+```
 
 ## Why it matters
 
