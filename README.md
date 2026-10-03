@@ -58,6 +58,13 @@ goalposts — including us.
 
 ## How the data fits together
 
+<p align="center">
+  <img src="assets/erd.svg" alt="Data model: a participant hashes to an assignment, which lands in one of four groups that set the warm-up prompt. The participant files a submission, which answers the prompts and is scored against an answer key. SHA-256 commitments lock both the prompts and the answer key." width="100%">
+</p>
+
+<details>
+<summary>Text version (Mermaid ERD)</summary>
+
 ```mermaid
 erDiagram
     PARTICIPANT ||--|| ASSIGNMENT : "username hashes to"
@@ -111,6 +118,8 @@ erDiagram
         string sha256
     }
 ```
+
+</details>
 
 ## Why it matters
 
